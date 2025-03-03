@@ -96,31 +96,31 @@ footer {
 .logout-btn:hover {
     opacity: 0.8;
 }
-.liked {
-    background-color: #1877f2;
-    color: white;
-}
 
-.like-btn, .comment-btn, .share-btn {
-    background: none;
+.like-btn {
+    padding: 8px 16px;
+    margin-right: 10px;
     border: none;
-    padding: 5px 10px;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 14px;
-    color: #1877f2;
+    background-color: #f0f2f5;
+    transition: background-color 0.2s;
 }
 
-.comment-section {
-    margin-top: 10px;
-    padding: 5px;
-    border-top: 1px solid #ccc;
-}
-.liked {
+.like-btn.liked {
     background-color: #1877f2;
     color: white;
 }
 
-.like-btn, .comment-btn, .share-btn {
+.like-btn:hover {
+    background-color: #e4e6eb;
+}
+
+.like-btn.liked:hover {
+    background-color: #166fe5;
+}
+
+.comment-btn, .share-btn {
     background: none;
     border: none;
     padding: 8px;
@@ -129,7 +129,7 @@ footer {
     color: #1877f2;
 }
 
-.like-btn:hover, .comment-btn:hover, .share-btn:hover {
+.comment-btn:hover, .share-btn:hover {
     text-decoration: underline;
 }
 
@@ -167,4 +167,53 @@ footer {
     background-color: #f0f2f5;
     border-radius: 5px;
     margin: 5px 0;
+}
+
+.comments-section {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #e4e6eb;
+}
+
+.comment {
+    margin: 8px 0;
+    padding: 8px;
+    background-color: #f0f2f5;
+    border-radius: 8px;
+}
+
+.comment strong {
+    color: #1877f2;
+    margin-right: 5px;
+}
+
+.comment-form {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.comment-form input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    outline: none;
+}
+
+.comment-form input:focus {
+    border-color: #1877f2;
+}
+
+.comment-form button {
+    padding: 8px 16px;
+    background-color: #1877f2;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.comment-form button:hover {
+    background-color: #166fe5;
 }

@@ -10,52 +10,90 @@ document.addEventListener("DOMContentLoaded", function () {
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
                 body: `post_id=${postId}`
             })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        btn.classList.toggle("liked");
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    btn.classList.toggle("liked");
+                    let likeText = btn.querySelector(".like-text");
+                    if (btn.classList.contains("liked")) {
+                        likeText.textContent = "Je n'aime plus";
+                    } else {
+                        likeText.textContent = "J'aime";
                     }
-                })
-                .catch(error => console.log("Erreur:", error));
+                }
+            })
+            .catch(error => console.error("Erreur:", error));
+        });
+    });
+
+    // Fonction de soumission des commentaires
+    async function submitComment(form) {
+        console.log("Soumission du commentaire");
+        
+        const postId = form.getAttribute("data-id");
+        const commentInput = form.querySelector("input[name='contenu']");
+        const commentList = document.getElementById("comments-" + postId);
+        
+        if (!commentInput.value.trim()) return;
+
+        const formData = new FormData();
+        formData.append("publication_id", postId);
+        formData.append("contenu", commentInput.value.trim());
+
+        try {
+            console.log("Envoi de la requête avec:", {
+                publication_id: postId,
+                contenu: commentInput.value.trim()
+            });
+
+            const response = await fetch("../controllers/commentaireController.php", {
+                method: "POST",
+                body: formData
+            });
+
+            const responseText = await response.text();
+            console.log("Réponse brute:", responseText);
+
+            let data;
+            try {
+                data = JSON.parse(responseText);
+            } catch (e) {
+                console.error("Erreur de parsing JSON:", e);
+                throw new Error("Réponse invalide du serveur");
+            }
+
+            console.log("Données parsées:", data);
+
+            if (data.success) {
+                const newComment = document.createElement("p");
+                newComment.className = "comment";
+                newComment.innerHTML = `<strong>${data.pseudo} :</strong> ${data.contenu}`;
+                commentList.insertBefore(newComment, commentList.firstChild);
+                commentInput.value = "";
+            } else {
+                throw new Error(data.error || "Erreur inconnue");
+            }
+        } catch (error) {
+            console.error("Erreur complète:", error);
+            alert("Erreur lors de l'ajout du commentaire: " + error.message);
+        }
+    }
+
+    // Gestion des commentaires
+    document.querySelectorAll(".comment-form").forEach(form => {
+        form.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            await submitComment(form);
         });
     });
 
     // Gestion du bouton "Commenter"
     document.querySelectorAll(".comment-btn").forEach(button => {
-        button.addEventListener("click", function () {
+        button.addEventListener("click", function() {
             let postId = this.getAttribute("data-id");
-            let commentSection = document.getElementById("comments-" + postId);
-            if (commentSection.innerHTML === "") {
-                commentSection.innerHTML = `
-                    <form class="comment-form" data-id="${postId}">
-                        <input type="text" name="comment" placeholder="Écrire un commentaire..." required>
-                        <button type="submit">Envoyer</button>
-                    </form>
-                    <div class="comment-list"></div>
-                `;
-            }
-            commentSection.style.display = (commentSection.style.display === "none") ? "block" : "none";
-
-            // Ajouter un événement pour poster un commentaire
-            commentSection.querySelector(".comment-form").addEventListener("submit", function (e) {
-                e.preventDefault();
-                let commentInput = this.querySelector("input[name='comment']");
-                let commentList = this.nextElementSibling;
-
-                fetch("../controllers/commentaireController.php", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: `post_id=${postId}&comment=${encodeURIComponent(commentInput.value)}`
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            commentList.innerHTML += `<p><strong>Vous :</strong> ${commentInput.value}</p>`;
-                            commentInput.value = "";
-                        }
-                    })
-                    .catch(error => console.log("Erreur:", error));
-            });
+            let commentForm = document.querySelector(`.comment-form[data-id="${postId}"]`);
+            let commentInput = commentForm.querySelector("input[name='contenu']");
+            commentInput.focus();
         });
     });
 
@@ -67,65 +105,6 @@ document.addEventListener("DOMContentLoaded", function () {
             navigator.clipboard.writeText(shareUrl).then(() => {
                 alert("Lien copié ! Partagez-le avec vos amis.");
             });
-        });
-    });
-});
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".like-btn").forEach(button => {
-        button.addEventListener("click", function () {
-            let postId = this.getAttribute("data-id");
-            this.classList.toggle("liked");
-        });
-    });
-
-    document.querySelectorAll(".comment-form").forEach(form => {
-        form.addEventListener("submit", function (e) {
-            e.preventDefault();
-            let postId = this.getAttribute("data-id");
-            let commentInput = this.querySelector("input[name='comment']");
-            let commentList = this.nextElementSibling;
-
-            fetch("../controllers/commentController.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `post_id=${postId}&comment=${encodeURIComponent(commentInput.value)}`
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        let newComment = document.createElement("p");
-                        newComment.innerHTML = `<strong>Vous :</strong> ${commentInput.value}`;
-                        commentList.appendChild(newComment);
-                        commentInput.value = "";
-                    }
-                })
-                .catch(error => console.log("Erreur:", error));
-        });
-    });
-});
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".comment-form").forEach(form => {
-        form.addEventListener("submit", function (e) {
-            e.preventDefault();
-            let postId = this.getAttribute("data-id");
-            let commentInput = this.querySelector("input[name='contenu']");
-            let commentList = document.getElementById("comments-" + postId);
-
-            fetch("../controllers/commentController.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `publication_id=${postId}&contenu=${encodeURIComponent(commentInput.value)}`
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data) {
-                        let newComment = document.createElement("p");
-                        newComment.innerHTML = `<strong>${data.pseudo} :</strong> ${data.contenu}`;
-                        commentList.appendChild(newComment);
-                        commentInput.value = "";
-                    }
-                })
-                .catch(error => console.log("Erreur:", error));
         });
     });
 });
