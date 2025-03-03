@@ -1,0 +1,170 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background: #1877f2;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+nav a {
+    color: black;
+    text-decoration: none;
+    margin-left: 15px;
+    font-size: 18px;
+}
+
+.feed-container {
+    width: 50%;
+    margin: auto;
+    padding: 20px;
+}
+
+.post {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profil-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.user-email {
+    font-weight: bold;
+}
+
+.post-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+button {
+    border: none;
+    padding: 8px 12px;
+    background: #1877f2;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+.logout-btn {
+    background: red;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    opacity: 0.8;
+}
+.liked {
+    background-color: #1877f2;
+    color: white;
+}
+
+.like-btn, .comment-btn, .share-btn {
+    background: none;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #1877f2;
+}
+
+.comment-section {
+    margin-top: 10px;
+    padding: 5px;
+    border-top: 1px solid #ccc;
+}
+.liked {
+    background-color: #1877f2;
+    color: white;
+}
+
+.like-btn, .comment-btn, .share-btn {
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #1877f2;
+}
+
+.like-btn:hover, .comment-btn:hover, .share-btn:hover {
+    text-decoration: underline;
+}
+
+.comment-section {
+    display: none;
+    margin-top: 10px;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+}
+
+.comment-form input {
+    width: 80%;
+    padding: 5px;
+    margin-right: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.comment-form button {
+    padding: 5px 10px;
+    background-color: #1877f2;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.comment-list {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.comment-list p {
+    padding: 5px;
+    background-color: #f0f2f5;
+    border-radius: 5px;
+    margin: 5px 0;
+}
